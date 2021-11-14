@@ -37,6 +37,10 @@ def main():
     data = response.json()
 
     # find temperature in returned data set
+    # there are a lot more interesting data points in here like 
+    # humidity, pressure etc in data['main'] 
+    # and a description of the weather in data['report'] 
+    # for details see https://openweathermap.org/current#parameter
     main = data['main']
     temperature = main['temp']
 
