@@ -32,7 +32,8 @@ def main():
     # if failed indicate http error status to caller 
     if response.status_code != 200:
         print(f"Error in the HTTP request:{response.status_code}")
-    
+        exit(-1)
+
     # parse response from json
     data = response.json()
 
