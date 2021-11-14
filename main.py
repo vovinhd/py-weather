@@ -8,7 +8,7 @@ BASE_URL = "https://api.openweathermap.org/data/2.5/weather?"
 # default query
 CITY = "Bremen"
 
-def main():
+def report_temp():
     # load environment from .env
     load_dotenv()
     OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY')
@@ -16,8 +16,7 @@ def main():
     
     # fail if api key is missing
     if OPENWEATHER_API_KEY == None:
-        print("Please define OPENWEATHER_API_KEY in your .env file!")
-        exit(-1)
+        raise Exception("Please define OPENWEATHER_API_KEY in your .env file!")
     
     # use defualt query if none is defined in .env 
     if QUERY == None: 
@@ -31,8 +30,7 @@ def main():
 
     # if failed indicate http error status to caller 
     if response.status_code != 200:
-        print(f"Error in the HTTP request:{response.status_code}")
-        exit(-1)
+        raise Exception(f"Error in the HTTP request:{response.status_code}")
 
     # parse response from json
     data = response.json()
@@ -46,12 +44,16 @@ def main():
     temperature = main['temp']
 
     # prettyprint result
-    print(f"Current temperature in {QUERY} is {k_to_c(temperature):.2f}°C")
-    exit(0)
+    return f"Current temperature in {QUERY} is {k_to_c(temperature):.2f}°C"
 
 # convert temperature in kelvin to celsius 
 def k_to_c(temp):
     return temp - 273.15
 
 if __name__ == "__main__":
-    main()
+    try:
+        print(report_temp())
+    except Exception as error:
+        print(error)
+        exit(-1)
+    exit(0)
