@@ -12,7 +12,7 @@ und packt den in eine Datei die .env heißt und
 
 ```
 OPENWEATHER_API_KEY=<Dein Key>
-QUERY=<anfrage (optional)>
+QUERY=<Anfrage (optional)>
 ```
 enthält
 
