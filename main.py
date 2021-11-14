@@ -8,22 +8,9 @@ BASE_URL = "https://api.openweathermap.org/data/2.5/weather?"
 # default query
 CITY = "Bremen"
 
-def report_temp():
-    # load environment from .env
-    load_dotenv()
-    OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY')
-    QUERY = os.getenv('QUERY')
-    
-    # fail if api key is missing
-    if OPENWEATHER_API_KEY == None:
-        raise Exception("Please define OPENWEATHER_API_KEY in your .env file!")
-    
-    # use defualt query if none is defined in .env 
-    if QUERY == None: 
-        QUERY = CITY
-
+def report_temp(query, key):
     # construct request url
-    URL = f"{BASE_URL}q={QUERY}&appid={OPENWEATHER_API_KEY}"
+    URL = f"{BASE_URL}q={query}&appid={key}"
 
     # query api
     response = requests.get(URL)
@@ -44,15 +31,27 @@ def report_temp():
     temperature = main['temp']
 
     # prettyprint result
-    return f"Current temperature in {QUERY} is {k_to_c(temperature):.2f}°C"
+    return f"Current temperature in {query} is {k_to_c(temperature):.2f}°C"
 
 # convert temperature in kelvin to celsius 
 def k_to_c(temp):
     return temp - 273.15
 
 if __name__ == "__main__":
+    # load environment from .env
+    load_dotenv()
+    QUERY = os.getenv('QUERY')
+    OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY')
+
+    # fail if api key is missing
+    if OPENWEATHER_API_KEY == None:
+        raise Exception("Please define OPENWEATHER_API_KEY in your .env file!")
+    
+    # use defualt query if none is defined in .env 
+    if QUERY == None: 
+        QUERY = CITY
     try:
-        print(report_temp())
+        print(report_temp(QUERY, OPENWEATHER_API_KEY))
     except Exception as error:
         print(error)
         exit(-1)
