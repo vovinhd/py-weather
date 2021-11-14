@@ -50,6 +50,7 @@ if __name__ == "__main__":
     # use defualt query if none is defined in .env 
     if QUERY == None: 
         QUERY = CITY
+        
     try:
         print(report_temp(QUERY, OPENWEATHER_API_KEY))
     except Exception as error:
